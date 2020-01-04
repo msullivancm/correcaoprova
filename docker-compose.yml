@@ -1,0 +1,26 @@
+version: '3'
+services:
+ mysqltcexam:
+  container_name: mysqltcexam
+  image: mariadb
+  restart: always
+  ports:
+   - 3317:3306
+  volumes:
+   - ./mariadb:/var/lib/mysql
+  environment:
+   MYSQL_ROOT_PASSWORD: secret
+ tcexam:
+  container_name: tcexam
+  build:
+   context: ./phpldap/docker
+  restart: always
+  ports:
+   - 8090:80
+  volumes:
+   - ./tcexam:/var/www/html
+  depends_on:
+   - mysqltcexam
+  links:
+   - mysqltcexam
+
